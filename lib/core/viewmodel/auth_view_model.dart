@@ -1,3 +1,6 @@
+import 'package:b_store/core/services/firestore_user.dart';
+import 'package:b_store/model/user_model.dart';
+import 'package:b_store/view/auth/login_screen.dart';
 import 'package:b_store/view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +13,11 @@ class AuthViewModel extends GetxController {
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   FirebaseAuth _auth = FirebaseAuth.instance;
   FacebookAuth _facebookAuth = FacebookAuth.instance;
-  late String email, password, name;
-    Rxn<User> _user=Rxn<User>();
-    String? get user=>_user.value?.email;
+  late String email, password;
+  String? name;
+  Rxn<User> _user = Rxn<User>();
+
+  String? get user => _user.value?.email;
 
   @override
   void onInit() {
@@ -45,7 +50,10 @@ class AuthViewModel extends GetxController {
       idToken: googleSignInAuthentication?.idToken,
       accessToken: googleSignInAuthentication?.accessToken,
     );
-    await _auth.signInWithCredential(credential);
+    await _auth.signInWithCredential(credential).then((value){
+      saveUser(value);
+      Get.offAll(HomeScreen());
+    });
   }
 
   //login using facebook using email and save the result in a LoginResult then get the token from access token of result
@@ -57,7 +65,10 @@ class AuthViewModel extends GetxController {
     final accessToken = result.accessToken?.token;
     if (result.status == LoginStatus.success) {
       final faceCred = FacebookAuthProvider.credential(accessToken!);
-      await _auth.signInWithCredential(faceCred);
+      await _auth.signInWithCredential(faceCred).then((value)async{
+      saveUser(value);
+      Get.offAll(HomeScreen());
+      });
     }
   }
 
@@ -70,6 +81,38 @@ class AuthViewModel extends GetxController {
       print(e);
       Get.snackbar('Login Error', e.toString(),
           colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  void SignUpWithEmailAndPassword() async {
+    try {
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value){
+            saveUser(value);
+      });
+
+      Get.offAll(LoginScreen());
+    } catch (e) {
+      print(e);
+      Get.snackbar('Login Error', e.toString(),
+          colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+  void saveUser(UserCredential value)async{
+    await FireStoreUser().addUserToFireStore(UserModel(
+      userId: value.user?.uid,
+      email: value.user?.email,
+      name: getName(value),
+      pic: '',
+    ));
+  }
+  String? getName(UserCredential value){
+    if(value.user?.displayName!=null){
+     return name=value.user?.displayName;
+    }
+    else{
+      return name=name;
     }
   }
 }

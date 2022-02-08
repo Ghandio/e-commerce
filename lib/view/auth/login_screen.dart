@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:b_store/const.dart';
 import 'package:b_store/core/viewmodel/auth_view_model.dart';
+import 'package:b_store/view/auth/register_view.dart';
 import 'package:b_store/view/widgets/custom_button.dart';
 import 'package:b_store/view/widgets/custom_icon_text_button.dart';
 import 'package:b_store/view/widgets/custom_text.dart';
@@ -32,7 +33,10 @@ class LoginScreen extends GetWidget<AuthViewModel> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:  [
                   CustomText(title: "Welcome,",fontSize: 30.0,),
-                  CustomText(title: "Sign Up",fontSize: 18,color: kPrimarycolor,)]
+                  GestureDetector(child: CustomText(title: "Sign Up",fontSize: 18,color: kPrimarycolor,),
+                  onTap: (){
+                    Get.to(RegisterScreen());
+                  },)]
 
               ),
               const SizedBox(height: 10,),

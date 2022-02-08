@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialBinding: Binding(),
       debugShowCheckedModeBanner:false,
       home: Scaffold(
-        body: ControlView(
+        body: ControlView (
 
         ),
       ),
