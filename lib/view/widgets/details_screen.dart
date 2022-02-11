@@ -1,11 +1,15 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, must_be_immutable, avoid_unnecessary_containers
 
 import 'package:b_store/const.dart';
+import 'package:b_store/core/viewmodel/cart_viewmodel.dart';
+import 'package:b_store/model/cart_product_model.dart';
 import 'package:b_store/model/product_model.dart';
+import 'package:b_store/view/cart_screen.dart';
 import 'package:b_store/view/widgets/custom_button.dart';
 import 'package:b_store/view/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class DetailsScreen extends StatelessWidget {
   late ProductModel model;
@@ -127,15 +131,20 @@ class DetailsScreen extends StatelessWidget {
                   )
                 ],
               ),
-              Container(
-                height: 80,
-                padding:EdgeInsets.all(10) ,
-                width: 180,
-                child: CustomButton(
-                  onpressed: (){
-
-                  },
-                  title: 'ADD',
+              GetBuilder<CartViewModel>(
+                init: CartViewModel(),
+                builder:(controller)=> Container(
+                  height: 80,
+                  padding:EdgeInsets.all(10) ,
+                  width: 180,
+                  child: CustomButton(
+                    onpressed: (){
+                              controller.addProduct(
+                                CartProductModel(model.name, model.image, 1, model.price)
+                              );
+                    },
+                    title: 'ADD',
+                  ),
                 ),
               )
 

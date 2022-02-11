@@ -10,25 +10,17 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: TextButton(
-            onPressed: onpressed,
-            child: Text(title),
-            style: TextButton.styleFrom(
-              primary: Colors.white,
-              backgroundColor: kPrimarycolor,
-              padding: const EdgeInsets.all(15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18)
-              )
-            ),
-          ),
+    return TextButton(
+      onPressed: onpressed,
+        child: Text(title),
+        style: TextButton.styleFrom(
+          primary: Colors.white,
+          backgroundColor: color,
+          padding: const EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18)
+          )
         ),
-      ],
     );
   }
 }
