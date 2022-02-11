@@ -4,6 +4,7 @@ import 'package:b_store/core/viewmodel/control_view_model.dart';
 import 'package:b_store/core/viewmodel/home_view_model.dart';
 import 'package:b_store/view/auth/login_screen.dart';
 import 'package:b_store/view/widgets/custom_text.dart';
+import 'package:b_store/view/widgets/details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeViewModel>(
+      init: Get.find<HomeViewModel>(),
       builder:(controller)=>controller.loading.value?Center(child: CircularProgressIndicator()): Scaffold(
         body:SingleChildScrollView(
           child: Container(
@@ -91,38 +93,45 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _listViewProduct() {
-    return Container(
-      height: 350,
-      child: ListView.separated(
-        itemCount: names.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context,index){
-          return Container(
-            width: MediaQuery.of(context).size.width * .4,
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.grey.shade100
-                  ),
-                  width: MediaQuery.of(context).size.width * .4,
-                  child: Container(
+    return GetBuilder<HomeViewModel>(
+      builder:(controller)=> Container(
+        height: 350,
+        child: ListView.separated(
+          itemCount: controller.productModel.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context,index){
+            return GestureDetector(
+              onTap: (){
+                Get.to(DetailsScreen(controller.productModel[index]));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * .4,
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.grey.shade100
+                      ),
+                      width: MediaQuery.of(context).size.width * .4,
+                      child: Container(
 
-                      height: 220,child: Image.asset('assets/images/watch.png',fit:BoxFit.fill ,)),
+                          height: 220,child: Image.network(controller.productModel[index].image,fit:BoxFit.fill ,)),
+                    ),
+                    SizedBox(height: 10,),
+                    CustomText(title: controller.productModel[index].name,
+                    alignment: Alignment.bottomLeft,),
+                    SizedBox(height: 5,),
+                     CustomText(title: controller.productModel[index].description,
+                        alignment: Alignment.bottomLeft,color: Colors.grey,maxLine: 1,),
+                    SizedBox(height: 5,),
+                    CustomText(title: controller.productModel[index].price+"\$",
+                      alignment: Alignment.bottomLeft,color: kPrimarycolor,)
+                  ],
                 ),
-                SizedBox(height: 10,),
-                CustomText(title: 'BoePlay Speaker',
-                alignment: Alignment.bottomLeft,),
-                SizedBox(height: 5,),
-                CustomText(title: 'BoePlay Speaker',
-                  alignment: Alignment.bottomLeft,color: Colors.grey,),
-                SizedBox(height: 5,),
-                CustomText(title: "755\$",
-                  alignment: Alignment.bottomLeft,color: kPrimarycolor,)
-              ],
-            ),
-          );}, separatorBuilder: ( context, index) =>SizedBox(width: 20,),
+              ),
+            );}, separatorBuilder: ( context, index) =>SizedBox(width: 20,),
+        ),
       ),
     );
   }

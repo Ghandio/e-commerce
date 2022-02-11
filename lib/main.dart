@@ -7,7 +7,7 @@ import 'package:b_store/view/auth/login_screen.dart';
 import 'package:get/get.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp( MyApp());
 }
@@ -23,6 +23,10 @@ class MyApp extends StatelessWidget {
         body: ControlView (
 
         ),
+      ),
+      theme: ThemeData(
+        fontFamily: 'SourceSans'
+
       ),
     );
   }
