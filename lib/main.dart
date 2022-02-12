@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:b_store/view/auth/login_screen.dart';
 import 'package:get/get.dart';
 
+import 'core/viewmodel/cart_viewmodel.dart';
+
 void main() async {
    WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

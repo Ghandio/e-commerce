@@ -140,7 +140,7 @@ class DetailsScreen extends StatelessWidget {
                   child: CustomButton(
                     onpressed: (){
                               controller.addProduct(
-                                CartProductModel(model.name, model.image, 1, model.price)
+                                CartProductModel(model.name, model.image, 1, model.price,model.productId)
                               );
                     },
                     title: 'ADD',

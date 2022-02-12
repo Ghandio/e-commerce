@@ -18,6 +18,7 @@ class ControlView extends GetWidget<AuthViewModel> {
       return(Get.find<AuthViewModel>().user==null)
           ?LoginScreen()
           :GetBuilder<ControlViewModel>(
+        init: ControlViewModel(),
             builder:(controller)=> Scaffold(
         body: controller.currentScreen,
         bottomNavigationBar: _bottomNavigationBar(),),

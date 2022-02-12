@@ -2,7 +2,7 @@ import 'package:b_store/helper/extension.dart';
 import 'package:flutter/material.dart';
 
 class ProductModel {
-  late String name, description, image, size, price;
+  late String name, description, image, size, price,productId;
   late Color color;
 
   ProductModel(
@@ -11,7 +11,8 @@ class ProductModel {
       this.image,
       this.color,
       this.size,
-      this.price);
+      this.price,
+      this.productId);
   ProductModel.fromJson(Map<dynamic,dynamic> map){
     if(map==null){
       return;
@@ -22,6 +23,7 @@ class ProductModel {
     size=map['size'];
     price=map['price'];
     description=map['description'];
+    productId=map['productId'];
 
 
   }
@@ -32,7 +34,8 @@ class ProductModel {
       'color':color,
       'size':size,
       'price':price,
-      'description':description
+      'description':description,
+      'productId':productId
 
 
     };

@@ -1,5 +1,6 @@
 import 'package:b_store/const.dart';
 import 'package:b_store/model/cart_product_model.dart';
+import 'package:b_store/model/product_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -20,8 +21,8 @@ class CartDatabaseHelper{
       $columnName TEXT NOT NULL,
       $columnImage TEXT NOT NULL,
       $columnPrice TEXT NOT NULL,
-      $columnQuantity INTEGER NOT NULL
-      )
+      $columnQuantity INTEGER NOT NULL,
+      $columnproductId TEXT NOT NULL )
       ''');
     });
   }
@@ -35,6 +36,12 @@ Future<List<CartProductModel>> getAllProduct()async{
     List<CartProductModel> list =maps.isNotEmpty?maps.map((product) => CartProductModel.fromJson(product)).toList()
     :[];
         return list;
+}
+updateProduct(CartProductModel model)async{
+    var dbClient=await database;
+    return await dbClient!.update(tableCartProduct, model.toJson(),
+    where: '$columnproductId = ?',whereArgs: [model.productId]
+    );
 }
 
 }
