@@ -10,3 +10,4 @@ final String columnQuantity='quantity';
 final String columnPrice='price';
 final String columnproductId='productId';
 
+const kCachedUserData = 'CACHED_USER_DATA';

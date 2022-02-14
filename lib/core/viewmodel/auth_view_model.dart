@@ -1,6 +1,8 @@
 import 'package:b_store/core/services/firestore_user.dart';
+import 'package:b_store/helper/local_storage_data.dart';
 import 'package:b_store/model/user_model.dart';
 import 'package:b_store/view/auth/login_screen.dart';
+import 'package:b_store/view/control_view.dart';
 import 'package:b_store/view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class AuthViewModel extends GetxController {
   Rxn<User> _user = Rxn<User>();
 
   String? get user => _user.value?.email;
+final LocalStorageData localStorageData = Get.find();
 
   @override
   void onInit() {
@@ -52,7 +55,7 @@ class AuthViewModel extends GetxController {
     );
     await _auth.signInWithCredential(credential).then((value){
       saveUser(value);
-      Get.offAll(HomeScreen());
+      Get.offAll(ControlView());
     });
   }
 
@@ -75,8 +78,13 @@ class AuthViewModel extends GetxController {
   //Login with email and password
   void emailAndPasswordSignIn() async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.offAll(HomeScreen());
+      await _auth.signInWithEmailAndPassword(email: email, password: password).then((value)async
+      {
+        await  FireStoreUser().getCurrentUser(value.user!.uid).then((value){
+          setUser(UserModel.fromJson(value.data() as Map<dynamic,dynamic> ));
+        });
+      });
+      Get.offAll(ControlView());
     } catch (e) {
       print(e);
       Get.snackbar('Login Error', e.toString(),
@@ -92,7 +100,7 @@ class AuthViewModel extends GetxController {
             saveUser(value);
       });
 
-      Get.offAll(LoginScreen());
+      Get.offAll(ControlView());
     } catch (e) {
       print(e);
       Get.snackbar('Login Error', e.toString(),
@@ -100,12 +108,14 @@ class AuthViewModel extends GetxController {
     }
   }
   void saveUser(UserCredential value)async{
-    await FireStoreUser().addUserToFireStore(UserModel(
+    UserModel userModel = UserModel(
       userId: value.user?.uid,
       email: value.user?.email,
       name: getName(value),
       pic: '',
-    ));
+    );
+    await FireStoreUser().addUserToFireStore(userModel);
+    setUser(userModel);
   }
   String? getName(UserCredential value){
     if(value.user?.displayName!=null){
@@ -114,5 +124,8 @@ class AuthViewModel extends GetxController {
     else{
       return name=name;
     }
+  }
+  void setUser(UserModel userModel)async{
+    await localStorageData.setUser(userModel);
   }
 }
