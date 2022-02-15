@@ -23,78 +23,81 @@ class LoginScreen extends GetWidget<AuthViewModel> {
         elevation: 0.0,
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30, right: 20, left: 20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
-                  CustomText(title: "Welcome,",fontSize: 30.0,),
-                  GestureDetector(child: CustomText(title: "Sign Up",fontSize: 18,color: kPrimarycolor,),
-                  onTap: (){
-                    Get.to(RegisterScreen());
-                  },)]
+      body: SingleChildScrollView(
+        physics:BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30, right: 20, left: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                    CustomText(title: "Welcome,",fontSize: 30.0,),
+                    GestureDetector(child: CustomText(title: "Sign Up",fontSize: 18,color: kPrimarycolor,),
+                    onTap: (){
+                      Get.to(RegisterScreen());
+                    },)]
 
-              ),
-              const SizedBox(height: 10,),
-              CustomText(title: 'Sign in to Continue',fontSize: 14.0,color: Colors.grey,),
-              const SizedBox(height: 30,),
-              CustomTextFormField(
-                  text:'Email',
-                  hint:'iamdavid@gmail.com',
-                  onSave:(value){
-                        controller.email=value!;
-              }, validator:(value){
-                  if(value==null){
-                    print("ERROR");
-                  }
-              }),
-              SizedBox(height: 40,),
-              CustomTextFormField(text:'Password' ,
-                  hint: '*******',
-                  onSave:(value){
-                      controller.password=value!;
-                  },
-                  validator:(value){
+                ),
+                const SizedBox(height: 10,),
+                CustomText(title: 'Sign in to Continue',fontSize: 14.0,color: Colors.grey,),
+                const SizedBox(height: 30,),
+                CustomTextFormField(
+                    text:'Email',
+                    hint:'iamdavid@gmail.com',
+                    onSave:(value){
+                          controller.email=value!;
+                }, validator:(value){
                     if(value==null){
-                      print("ERROR password");
+                      print("ERROR");
                     }
-                  }),
-              const SizedBox(height: 30,),
-              CustomText(title: 'Forget Password?',alignment: Alignment.topRight,),
-              SizedBox(height: 10,),
-              CustomButton(title: 'SIGN IN',onpressed: (){
-                                 _formKey.currentState?.save();
-                            if(_formKey.currentState!.validate()){
-                              controller.emailAndPasswordSignIn();
-                            }
+                }),
+                SizedBox(height: 40,),
+                CustomTextFormField(text:'Password' ,
+                    hint: '*******',
+                    onSave:(value){
+                        controller.password=value!;
+                    },
+                    validator:(value){
+                      if(value==null){
+                        print("ERROR password");
+                      }
+                    }),
+                const SizedBox(height: 30,),
+                CustomText(title: 'Forget Password?',alignment: Alignment.topRight,),
+                SizedBox(height: 10,),
+                CustomButton(title: 'SIGN IN',onpressed: (){
+                                   _formKey.currentState?.save();
+                              if(_formKey.currentState!.validate()){
+                                controller.emailAndPasswordSignIn();
+                              }
 
-              },),
-              SizedBox(height: 20,),
-              CustomText(title: '-OR-',alignment: Alignment.center,),
-              SizedBox(height: 30,),
-              CustomIconTextButton(
-                imagePath:'assets/images/facebook.png',
-                text: 'Sign In with Facebook',
-                onpressed: (){
-                    controller.facebookSignIn();
-              },),
-              SizedBox(height: 20,),
-              CustomIconTextButton(
-                imagePath: 'assets/images/google.png',
-                text: 'Sign In with Google',
-                onpressed: (){
-                          controller.googleSignInMethod();
-              },)
+                },),
+                SizedBox(height: 20,),
+                CustomText(title: '-OR-',alignment: Alignment.center,),
+                SizedBox(height: 30,),
+                CustomIconTextButton(
+                  imagePath:'assets/images/facebook.png',
+                  text: 'Sign In with Facebook',
+                  onpressed: (){
+                      controller.facebookSignIn();
+                },),
+                SizedBox(height: 20,),
+                CustomIconTextButton(
+                  imagePath: 'assets/images/google.png',
+                  text: 'Sign In with Google',
+                  onpressed: (){
+                            controller.googleSignInMethod();
+                },)
 
 
 
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -132,7 +132,7 @@ class DetailsScreen extends StatelessWidget {
                 ],
               ),
               GetBuilder<CartViewModel>(
-                init: CartViewModel(),
+                 init: CartViewModel(),
                 builder:(controller)=> Container(
                   height: 80,
                   padding:EdgeInsets.all(10) ,

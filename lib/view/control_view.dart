@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:b_store/core/viewmodel/auth_view_model.dart';

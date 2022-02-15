@@ -1,5 +1,5 @@
 class UserModel{
-  late String? userId,email,name,pic;
+  String? userId,email,name,pic;
   UserModel({
     required this.userId,
     required this.email,

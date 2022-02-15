@@ -20,7 +20,7 @@ class AuthViewModel extends GetxController {
   Rxn<User> _user = Rxn<User>();
 
   String? get user => _user.value?.email;
-final LocalStorageData localStorageData = Get.find();
+  final LocalStorageData localStorageData = Get.find();
 
   @override
   void onInit() {
@@ -53,7 +53,7 @@ final LocalStorageData localStorageData = Get.find();
       idToken: googleSignInAuthentication?.idToken,
       accessToken: googleSignInAuthentication?.accessToken,
     );
-    await _auth.signInWithCredential(credential).then((value){
+    await _auth.signInWithCredential(credential).then((value) {
       saveUser(value);
       Get.offAll(ControlView());
     });
@@ -68,9 +68,9 @@ final LocalStorageData localStorageData = Get.find();
     final accessToken = result.accessToken?.token;
     if (result.status == LoginStatus.success) {
       final faceCred = FacebookAuthProvider.credential(accessToken!);
-      await _auth.signInWithCredential(faceCred).then((value)async{
-      saveUser(value);
-      Get.offAll(HomeScreen());
+      await _auth.signInWithCredential(faceCred).then((value) async {
+        saveUser(value);
+        Get.offAll(HomeScreen());
       });
     }
   }
@@ -78,10 +78,11 @@ final LocalStorageData localStorageData = Get.find();
   //Login with email and password
   void emailAndPasswordSignIn() async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password).then((value)async
-      {
-        await  FireStoreUser().getCurrentUser(value.user!.uid).then((value){
-          setUser(UserModel.fromJson(value.data() as Map<dynamic,dynamic> ));
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) async {
+        await FireStoreUser().getCurrentUser(value.user!.uid).then((value) {
+          setUser(UserModel.fromJson(value.data() as Map<dynamic, dynamic>));
         });
       });
       Get.offAll(ControlView());
@@ -96,8 +97,8 @@ final LocalStorageData localStorageData = Get.find();
     try {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value){
-            saveUser(value);
+          .then((value) {
+        saveUser(value);
       });
 
       Get.offAll(ControlView());
@@ -107,25 +108,27 @@ final LocalStorageData localStorageData = Get.find();
           colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
     }
   }
-  void saveUser(UserCredential value)async{
+
+  void saveUser(UserCredential value) async {
     UserModel userModel = UserModel(
       userId: value.user?.uid,
       email: value.user?.email,
       name: getName(value),
-      pic: '',
+      pic: value.user?.photoURL,
     );
     await FireStoreUser().addUserToFireStore(userModel);
     setUser(userModel);
   }
-  String? getName(UserCredential value){
-    if(value.user?.displayName!=null){
-     return name=value.user?.displayName;
-    }
-    else{
-      return name=name;
+
+  String? getName(UserCredential value) {
+    if (value.user?.displayName != null) {
+      return name = value.user?.displayName;
+    } else {
+      return name = name;
     }
   }
-  void setUser(UserModel userModel)async{
+
+  void setUser(UserModel userModel) async {
     await localStorageData.setUser(userModel);
   }
 }

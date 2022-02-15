@@ -33,7 +33,6 @@ class CartViewModel extends GetxController {
   getTotalPrice(){
     for(int i=0;i<_cartProductModel.length;i++){
       _totalPrice+=(double.parse(_cartProductModel[i].price) * _cartProductModel[i].quantity);
-      print(_totalPrice);
     }
     update();
   }
